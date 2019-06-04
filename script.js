@@ -79,6 +79,7 @@ function redisplay() {
      mainContainer.innerHTML += `<br><center><p class="termP" id="item${counter}" onclick="removeItem(${counter})">${i}:${obj[i]}</p></center>`;
   }
   mainContainer.innerHTML += `<br><center><button id="finishBtn" onclick="finish()">Finish</button><br><br><button id="newBtn" onclick="returnHome();">Return Home</button></center>`;
+  document.querySelector("#termInput").select();
 }
 
 function removeItem(n) {
