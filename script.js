@@ -133,7 +133,7 @@ function check(a) {
       mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[0]}</h1><p class="c">Correct :)</p><br><form action="javascript:check('a:b')"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
     } else { // Wrong
       wrong++;
-      mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[0]}</h1><p class="w">Wrong :(</p><br><form action="javascript:check('a:b')"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
+      mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[0]}</h1><p class="w">Wrong :( Answer was: ${arr[counter].split(':')[1]}</p><br><form action="javascript:check('a:b')"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
     }
   } else if (a == 'b:a') {
     if (document.querySelector("#answerInput").value.toLowerCase() == arr[counter].split(':')[0].toLowerCase()) { // Correct
@@ -141,7 +141,7 @@ function check(a) {
       mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[1]}</h1><p class="c">Correct :)</p><br><form action="javascript:check('b:a')"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
     } else { // Wrong
       wrong++;
-      mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[1]}</h1><p class="w">Wrong :(</p><br><form action="javascript:check('b:a')"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
+      mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[1]}</h1><p class="w">Wrong :( Answer was: ${arr[counter].split(':')[0]}</p><br><form action="javascript:check('b:a')"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
     }
   }
 
@@ -154,7 +154,7 @@ function check(a) {
       mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[1]}</h1><br><form action="javascript:check('b:a')"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
     }
     document.querySelector("#answerInput").select();
-  }, 1000);
+  }, 2000);
   
 }
 
