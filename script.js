@@ -43,7 +43,7 @@ function loadClick() {
 
   mainContainer.innerHTML = `<center><h1>Loading...</h1></center>`;
 
-  $.get("https://api.myjson.com/bins/19a3ev" , function(data, textStatus, jqXHR) {
+  $.get("https://api.myjson.com/bins/1cgedr" , function(data, textStatus, jqXHR) {
     if (data[value.toLowerCase()]) {
       counter = 0;
       arr = [];
@@ -92,14 +92,14 @@ function finish() {
   let a = confirm("Are you sure?");
   if (a) {
     mainContainer.innerHTML = `<center><h1>Loading...</h1></center>`;
-    $.get("https://api.myjson.com/bins/19a3ev", function(data, textStatus, jqXHR) {
+    $.get("https://api.myjson.com/bins/1cgedr", function(data, textStatus, jqXHR) {
       let resp = data;
       let password = generatePassword(resp);
       console.log("password" + password);
       resp[password] = obj;
       console.log(resp);
       $.ajax({
-        url:"https://api.myjson.com/bins/19a3ev",
+        url:"https://api.myjson.com/bins/1cgedr",
         type:"PUT",
         data: JSON.stringify(resp),
         contentType:"application/json; charset=utf-8",
