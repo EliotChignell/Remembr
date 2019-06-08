@@ -76,8 +76,10 @@ function addItem() {
 
 function redisplay() {
   mainContainer.innerHTML = `<br><center><form action="javascript:addItem()"><input type="text" placeholder="Term:Description" id="termInput" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"><p>Press enter to add item</p></form><br></center>`;
+  let c = 0;
   for (var i in obj) {
-     mainContainer.innerHTML += `<br><center><p class="termP" id="item${counter-1}" onclick="removeItem(${counter-1})">${i}:${obj[i]}</p></center>`;
+     mainContainer.innerHTML += `<br><center><p class="termP" id="item${c}" onclick="removeItem(${c})">${i}:${obj[i]}</p></center>`;
+     c++;
   }
   mainContainer.innerHTML += `<br><center><button id="finishBtn" onclick="finish()">Finish</button><br><br><button id="newBtn" onclick="returnHome();">Return Home</button></center>`;
   document.querySelector("#termInput").select();
