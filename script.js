@@ -9,6 +9,7 @@ const chars = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','
 let value;
 let correct = 0;
 let wrong = 0;
+let jsonContent = {};
 // let ejson = {};
 
 Array.prototype.shuffle = function(){
@@ -45,14 +46,14 @@ function loadClick() {
 
   $.get("https://api.myjson.com/bins/1cgedr" , function(data, textStatus, jqXHR) {
     if (data[value.toLowerCase()]) {
+      jsonContent = data[value.toLowerCase()];
       counter = 0;
       arr = [];
-      let list = shuffleProperties(data[value.toLowerCase()]);
+      /* let list = shuffleProperties(data[value.toLowerCase()]);
       for (var k in list) {
         arr.push(`${k}:${list[k]}`);
-      }
+      } */
       loadMenu();
-      // mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[0]}</h1><br><form action="javascript:check()"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
     } else {
       returnHome();
       alert("That password does not exist!");
@@ -62,7 +63,7 @@ function loadClick() {
 }
 
 function loadMenu() {
-  mainContainer.innerHTML = `<center><br><button id="finishBtn">${value.toLowerCase()}</button><br><br><hr><br><br><button id="studyBtn" onclick="study()">Study</button><br><br><button id="testBtn" onclick="test()">Test</button><br><br><button id="newBtn" onclick="returnHome()">Return Home</button></center>`;
+  mainContainer.innerHTML = `<center><br><button id="finishBtn">${value.toLowerCase()}</button><br><br><hr><br><br><button id="studyBtn" onclick="study()">Study</button><br><br><button id="testBtn" onclick="test()">Test</button><br><br><button id="newBtn" onclick="edit()">Edit</button><br><br><button id="newBtn" onclick="returnHome()">Return Home</button></center>`;
 }
 
 function addItem() {
@@ -128,25 +129,60 @@ function generatePassword(resp) {
 
 function check(a) {
   if (a == 'a:b') {
-    if (document.querySelector("#answerInput").value.toLowerCase() == arr[counter].split(':')[1].toLowerCase()) { // Correct
-      correct++;
-      mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[0]}</h1><p class="c">Correct :)</p><br><form action="javascript:check('a:b')"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
-    } else { // Wrong
-      wrong++;
-      mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[0]}</h1><p class="w">Wrong :( Answer was: ${arr[counter].split(':')[1]}</p><br><form action="javascript:check('a:b')"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
+    if (arr[counter].split(':')[1].split('').includes(',')) {
+      let definitions = arr[counter].split(':')[1].split(',');
+      let foundDefinition = false;
+      for (var i=0;i<definitions.length;i++) {
+        if (document.querySelector('#answerInput').value.toLowerCase() == definitions[i].toLowerCase()) {
+          foundDefinition = true;
+          correct++;
+          mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[0]}</h1><p class="c">Correct :)</p><br><form action="javascript:check('a:b')"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
+        }
+      }
+      if (!foundDefinition) {
+        wrong++;
+        mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[0]}</h1><p class="w">Wrong :( Answer was: ${arr[counter].split(':')[1]}</p><br><form action="javascript:check('a:b')"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
+      }
+      
+    } else {
+      if (document.querySelector("#answerInput").value.toLowerCase() == arr[counter].split(':')[1].toLowerCase()) { // Correct
+        correct++;
+        mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[0]}</h1><p class="c">Correct :)</p><br><form action="javascript:check('a:b')"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
+      } else { // Wrong
+        wrong++;
+        mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[0]}</h1><p class="w">Wrong :( Answer was: ${arr[counter].split(':')[1]}</p><br><form action="javascript:check('a:b')"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
+      }
     }
   } else if (a == 'b:a') {
-    if (document.querySelector("#answerInput").value.toLowerCase() == arr[counter].split(':')[0].toLowerCase()) { // Correct
-      correct++;
-      mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[1]}</h1><p class="c">Correct :)</p><br><form action="javascript:check('b:a')"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
-    } else { // Wrong
-      wrong++;
-      mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[1]}</h1><p class="w">Wrong :( Answer was: ${arr[counter].split(':')[0]}</p><br><form action="javascript:check('b:a')"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
+    if (arr[counter].split(':')[0].split('').includes(',')) {
+      let definitions = arr[counter].split(':')[0].split(',');
+      let foundDefinition = false;
+      for (var i=0;i<definitions.length;i++) {
+        if (document.querySelector('#answerInput').value.toLowerCase() == definitions[i].toLowerCase()) {
+          foundDefinition = true;
+          correct++;
+          mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[1]}</h1><p class="c">Correct :)</p><br><form action="javascript:check('b:a')"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
+        }
+      }
+      if (!foundDefinition) {
+        wrong++;
+        mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[1]}</h1><p class="w">Wrong :( Answer was: ${arr[counter].split(':')[0]}</p><br><form action="javascript:check('b:a')"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
+      }
+      
+    } else {
+      if (document.querySelector("#answerInput").value.toLowerCase() == arr[counter].split(':')[0].toLowerCase()) { // Correct
+        correct++;
+        mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[1]}</h1><p class="c">Correct :)</p><br><form action="javascript:check('b:a')"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
+      } else { // Wrong
+        wrong++;
+        mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[1]}</h1><p class="w">Wrong :( Answer was: ${arr[counter].split(':')[0]}</p><br><form action="javascript:check('b:a')"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
+      }
     }
   }
 
   setTimeout(() => {
     counter++;
+    console.log(arr);
     if (counter == arr.length) summary();
     if (a == 'a:b') {
       mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[0]}</h1><br><form action="javascript:check('a:b')"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
@@ -167,6 +203,10 @@ function returnHome() {
 }
 
 function study() {
+  arr = [];
+  for (var key in jsonContent) {
+    arr.push(`${key}:${jsonContent[key]}`);
+  }
   mainContainer.innerHTML = `<center><h1>Study</h1><hr><br><br></center>`;
   for (var i=0;i<arr.length;i++) {
     mainContainer.innerHTML += `<center><p class="termP">${arr[i]}</p></center>`;
@@ -178,13 +218,30 @@ function test() {
   counter = 0;
   correct = 0;
   wrong = 0;
-  mainContainer.innerHTML = `<center><h1>How do you want to be tested?</h1><br><br><button id="newBtn" onclick="ab('a:b')">A:B</button><br><br><button id="newBtn" onclick="ab('b:a')">B:A</button></center>`;
-  /*
-  mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[0]}</h1><br><form action="javascript:check()"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
-  */
+  mainContainer.innerHTML = `<center><h1>How do you want to be tested?</h1><br><br><button id="newBtn" onclick="test2('a:b')">A:B</button><br><br><button id="newBtn" onclick="test2('b:a')">B:A</button></center>`;
 }
 
-function ab(a) {
+function test2(x) {
+  if (x == "a:b") {
+    mainContainer.innerHTML = `<center><h1>How do you want to be tested?</h1><br><br><button id="newBtn" onclick="ab('a:b','random')">Randomly</button><br><br><button id="newBtn" onclick="ab('a:b','order')">In Order</button></center>`;
+  } else if (x == "b:a") {
+    mainContainer.innerHTML = `<center><h1>How do you want to be tested?</h1><br><br><button id="newBtn" onclick="ab('b:a','random')">Randomly</button><br><br><button id="newBtn" onclick="ab('b:a','order')">In Order</button></center>`;
+  }
+}
+
+function ab(a, b) {
+  if (b == "order") {
+    arr = [];
+    for (var key in jsonContent) {
+      arr.push(`${key}:${jsonContent[key]}`);
+    }
+  } else if (b == "random") {
+    arr = [];
+    let randomisedList = shuffleProperties(jsonContent);
+    for (var key in randomisedList) {
+      arr.push(`${key}:${randomisedList[key]}`);
+    }
+  }
   if (a == 'a:b') {
     mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[0]}</h1><br><form action="javascript:check('a:b')"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
   } else if (a == 'b:a') {
@@ -195,4 +252,9 @@ function ab(a) {
 function summary() {
   mainContainer.innerHTML = `<center><h1>Summary</h1><br><h1>Grade: ${Math.floor((correct/(correct+wrong)*100))}% (${correct}/${correct+wrong})</h1><br><br><button id="newBtn" onclick="loadMenu()
   ">Go Back</button></center>`;
+}
+
+function edit() {
+  obj = jsonContent;
+  redisplay();
 }
