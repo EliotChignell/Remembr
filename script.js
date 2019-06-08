@@ -82,6 +82,7 @@ function redisplay() {
      c++;
   }
   mainContainer.innerHTML += `<br><center><button id="finishBtn" onclick="finish()">Finish</button><br><br><button id="newBtn" onclick="returnHome();">Return Home</button></center>`;
+  document.querySelector("#termInput").focus();
   document.querySelector("#termInput").select();
 }
 
@@ -191,6 +192,7 @@ function check(a) {
     } else if (a == 'b:a') {
       mainContainer.innerHTML = `<center><h1>${arr[counter].split(':')[1]}</h1><br><form action="javascript:check('b:a')"><input type="text" id="answerInput" placeholder="Answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></form></center>`;
     }
+    document.querySelector("#answerInput").focus();
     document.querySelector("#answerInput").select();
   }, 2000);
   
